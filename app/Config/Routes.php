@@ -78,11 +78,10 @@ $routes->setAutoRoute(true);
 //$routes->match(['get', 'post'], 'news/create', 'News::create');
 //$routes->get('news/(:segment)', 'News::view/$1');
 
-$routes->get('supplier/hapus/(:segment)', 'Supplier::hapus/$1');
-$routes->get('supplier/ubah/(:segment)', 'Supplier::ubah/$1');
-$routes->get('supplier/form', 'Supplier::form');
-$routes->get('supplier', 'Supplier::index');
-
+//$routes->get('supplier/hapus/(:segment)', 'Supplier::hapus/$1');
+//$routes->get('supplier/ubah/(:segment)', 'Supplier::ubah/$1');
+//$routes->get('supplier/form', 'Supplier::form');
+//$routes->get('supplier', 'Supplier::index');
 
 $routes->get('/', 'Home::index');
 

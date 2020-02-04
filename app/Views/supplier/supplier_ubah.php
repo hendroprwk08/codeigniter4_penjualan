@@ -1,5 +1,5 @@
 <?php
-if (! empty( $supplier ) && is_array( $supplier ) ) :
+if ( ! empty( $supplier ) && is_array( $supplier ) ) :
 
     echo form_open( 'supplier/perbarui' );
 

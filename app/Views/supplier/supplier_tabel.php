@@ -23,7 +23,7 @@ if ( ! empty( $supplier ) && is_array( $supplier ) ) :
     		<td><?= $row['picsupplier'] ?></td>
 			<td>
 				<?= anchor( 'supplier/ubah/'. $row['idsupplier'], 'Ubah' ) ?>
-				<?= anchor( 'supplier/hapus/'. $row['idsupplier'], 'Hapus' ) ?>
+				<?= anchor( 'supplier/hapus/'. $row['idsupplier'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
 			</td>			
          </tr>
     

@@ -15,9 +15,9 @@ class Supplier extends Controller
 	    $data['title'] = 'Tabel Supplier';
 	    $data['supplier'] = $model->tampil();
 	    
-	    echo view('templates/header', $data);
-	    echo view('supplier/supplier_tabel', $data); //lokasi fisik file
-	    echo view('templates/footer');
+	    echo view( 'templates/header', $data );
+	    echo view( 'supplier/supplier_tabel', $data ); //lokasi fisik file
+	    echo view( 'templates/footer' );
 	}
 	
 	public function form()
@@ -26,9 +26,9 @@ class Supplier extends Controller
 		
 		$data['title'] = 'Tambah Data Supplier';
 		
-		echo view('templates/header', $data);
-	    echo view('supplier/supplier'); //lokasi fisik file
-		echo view('templates/footer');
+		echo view( 'templates/header', $data );
+	    echo view( 'supplier/supplier' ); //lokasi fisik file
+		echo view( 'templates/footer' );
 	}
 
 	public function simpan()
@@ -49,27 +49,27 @@ class Supplier extends Controller
 			'picsupplier'  => $this->request->getVar('pic')
 		];
 
-		$model->simpan($data);
+		$model->simpan( $data );
 
 		//jika berhsil tampilkan pada view success
 		//wajib tampilkan pada VIEW, jangan diletak pada controller
-		$data['pesan'] = '<p>Data '.$this->request->getVar('nama'). ' berhasil disimpan.</p>'.anchor('supplier', 'Lanjut');
+		$data['pesan'] = '<p>Data '.$this->request->getVar('nama'). ' berhasil disimpan.</p>'.anchor( 'supplier', 'Lanjut' );
 
 		echo view('supplier/pesan', $data); //lokasi fisik file
 	}
 	
-	public function ubah($id)
+	public function ubah( $id )
 	{   
 	    $model = new SupplierModel();
 	    
 	    helper('form'); //load form helper
 	    
 	    $data['title'] = 'Pembaruan Data Supplier';
-	    $data['supplier'] = $model->pilih($id);
+	    $data['supplier'] = $model->pilih( $id );
 	    
-	    echo view('templates/header', $data);
-	    echo view('supplier/supplier_ubah'); //lokasi fisik file
-	    echo view('templates/footer');
+	    echo view( 'templates/header', $data );
+	    echo view( 'supplier/supplier_ubah' ); //lokasi fisik file
+	    echo view( 'templates/footer' );
 	}
 	
 	public function perbarui()
@@ -88,17 +88,17 @@ class Supplier extends Controller
 	    
 	    $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' berhasil diperbarui.</p>'.anchor('supplier', 'Lanjut');
 	    
-	    echo view('templates/pesan', $data); //lokasi fisik file*/
+	    echo view( 'templates/pesan', $data ); //lokasi fisik file*/
 	}
 	
-	public function hapus($id)
+	public function hapus( $id )
 	{
 	    $model = new SupplierModel();
 	    
 	    $model->hapus( $id );
 	    
-	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor('supplier', 'Lanjut');
+	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor( 'supplier', 'Lanjut' );
 	    
-	    echo view('templates/pesan', $data); 
+	    echo view( 'templates/pesan', $data ); 
 	}
 }
