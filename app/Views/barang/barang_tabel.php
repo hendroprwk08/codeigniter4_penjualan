@@ -1,10 +1,10 @@
-<?php 
+<?php
 echo anchor( 'barang/form', 'Tambah' );
 
-if ( ! empty( $barang ) && is_array( $barang ) ) : 
+if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
 
-	<table border="1">
+	<table border="1" style="border-collapse: collapse">
 		<tr>
 		<td>#</td>
 		<td>Nama</td>
@@ -14,31 +14,31 @@ if ( ! empty( $barang ) && is_array( $barang ) ) :
 		<td>Expired</td>
 		<td>&nbsp;</td>
 		</tr>
-		
-    <?php foreach ( $barang as $row ): ?>
+
+    <?php foreach ( $data as $row ): ?>
 		 <tr>
     		<td><?= $row['idbarang'] ?></td>
     		<td><?= $row['namabarang'] ?></td>
     		<td>
-    			Beli: <?= $row['hargabeli'] ?> 
+    			Beli: <?= $row['hargabeli'] ?>
     			Jual: <?= $row['hargajual'] ?>
 			</td>
     		<td><?= $row['stok'] ?></td>
     		<td>
-    			<?= $row['idsupplier'] ?> - 
+    			<?= $row['idsupplier'] ?> -
     			<?= $row['namasupplier'] ?>
 			</td>
     		<td><?= $row['expired'] ?></td>
 			<td>
 				<?= anchor( 'barang/ubah/'. $row['idbarang'], 'Ubah' ) ?>
 				<?= anchor( 'barang/hapus/'. $row['idbarang'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
-			</td>			
+			</td>
          </tr>
-    
+
 	<?php endforeach; ?>
 
 	</table>
-			
+
 <?php else : ?>
 
 	<p>Sayang sekali, data barang masih kosong.</p>
