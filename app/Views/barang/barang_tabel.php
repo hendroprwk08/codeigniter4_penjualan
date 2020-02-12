@@ -39,6 +39,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
 
 	</table>
 
+        <?= print_r( $pager ); ?>
+
 <?php else : ?>
 
 	<p>Sayang sekali, data barang masih kosong.</p>

@@ -30,7 +30,7 @@ class JualModel extends Model
         try {
             
             $builder = $this->db->table('vjual');
-            $query = $builder->get(); //ambil data
+            $query = $builder->orderBy('faktur', 'desc')->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array
             
             return $result; 

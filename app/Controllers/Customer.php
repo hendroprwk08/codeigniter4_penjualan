@@ -26,13 +26,13 @@ class Customer extends Controller
 
 	public function form()
 	{
-		helper('form'); //load form helper
+            helper('form'); //load form helper
 
-		$data['title'] = 'Tambah Data Barang';
+            $data['title'] = 'Tambah Data Barang';
 
-		echo view( 'templates/header', $data );
-	  echo view( 'customer/customer' ); //lokasi fisik file
-		echo view( 'templates/footer' );
+            echo view( 'templates/header', $data );
+            echo view( 'customer/customer' ); //lokasi fisik file
+            echo view( 'templates/footer' );
 	}
 
 	public function simpan()

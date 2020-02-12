@@ -1,4 +1,6 @@
 <?php
+print_r ( $barang );
+
 if ( ! empty( $barang ) && is_array( $barang ) ) :
 
     //menampilkan error hasil validasi form

@@ -25,7 +25,7 @@ class SupplierModel extends Model
     public function tampil()
     {
         try {
-            return $this->findAll();
+            return $this->orderBy('idsupplier', 'desc')->findAll();
         }
         catch (\Exception $e)
         {
@@ -47,7 +47,7 @@ class SupplierModel extends Model
     public function pilih($id)
     {   
         try {
-            return $this->where( 'idsupplier', $id )->findAll();
+            return $this->asArray()->where( 'idsupplier', $id )->findAll();
         }
         catch (\Exception $e)
         {

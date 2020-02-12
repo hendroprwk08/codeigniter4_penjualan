@@ -7,12 +7,14 @@ use App\Models\CustomerModel; //import
 
 class Jual extends Controller
 {
+    public $cart = null;
     public $session = null;
     
     public function __construct()
     {
         helper( [ 'url', 'form' ] ); //load url helper
         $this->session = \Config\Services::session();
+        $this->cart = \Config\Services::cart();
     }
 
     public function index()
@@ -47,6 +49,7 @@ class Jual extends Controller
         $data['customer'] = $cModel->tampil();
         $data['faktur'] = $model->create_no_faktur();
         $data['session'] = $this->session->get();
+        $data['cart'] = $this->cart->contents();
 
         echo view( 'templates/header', $data );
         echo view( 'jual/jual', $data ); //lokasi fisik file
@@ -64,56 +67,35 @@ class Jual extends Controller
         echo view( 'jual/jual_pilih_barang_tabel', $data ); //lokasi fisik file	    
     }
 
+    
+    public function set_header()
+    {
+        $data = [ 'faktur' => $this->request->getVar('faktur'),
+                     'tanggal' => $this->request->getVar('tanggal'),
+                     'idcustomer' => $this->request->getVar('idcustomer') ];
+
+        $this->session->set( $data );
+       
+        
+        if ( $this->session->get( 'edit' ) == 'true' ) :
+            $this->form_ubah();
+        else:
+            $this->form();
+        endif;
+    }
+    
     public function pilih_barang()
     {
-        //header session
-        if ( ! $this->session->has('faktur') ) :
-            $data[ 'faktur' ] = $this->request->getVar('faktur');
-            $data[ 'tanggal' ] = $this->request->getVar('tanggal');
-            $data[ 'idcustomer' ] = $this->request->getVar('idcustomer');
-        
-            $this->session->set( $data ); 
-        else:
-            $data = [ 'faktur' => $this->request->getVar('faktur'),
-                        'tanggal' => $this->request->getVar('tanggal'),
-                        'idcustomer' => $this->request->getVar('idcustomer') ];
-            
-            $this->session->set( $data );
-        endif;
-        
-        $data = null;
-        
-        //detail session
-        if ( ! $this->session->has('barang') ) 
-        {
-            $data[ 'barang' ][] = array (
-                                        'id'      => $this->request->getVar('id'),
-                                        'nama'    => $this->request->getVar('nama'),
-                                        'harga'   => (int) $this->request->getVar('harga'),
-                                        'qty'     => (int)$this->request->getVar('qty'),
-                                        'diskon'  => (int)$this->request->getVar('diskon'),
-                                        'jumlah'  => (int)$this->request->getVar('jumlah')
-                                    );            
+        $data = array(
+                    'id'      => $this->request->getVar('id'),
+                    'qty'     => $this->request->getVar('qty'),
+                    'price'   => $this->request->getVar('harga'),
+                    'name'    => $this->request->getVar('nama'),
+                    'options' => array('diskon' => $this->request->getVar('diskon') )
+                );
 
-            $this->session->set( $data );
-        }
-        else
-        {
-             //append new array
-            $data[] = array (
-                            'id'      => $this->request->getVar('id'),
-                            'nama'    => $this->request->getVar('nama'),
-                            'harga'   => (int)$this->request->getVar('harga'),
-                            'qty'     => (int)$this->request->getVar('qty'),
-                            'diskon'  => (int)$this->request->getVar('diskon'),
-                            'jumlah'  => (int)$this->request->getVar('jumlah')
-                        );     
-            
-            $this->session->push( 'barang' , $data );
-        }
-        
-        //die (print_r($_SESSION));
-        
+        $this->cart->insert( $data );
+
         if ( $this->session->get( 'edit' ) == 'true' ) :
             $this->form_ubah();
         else:
@@ -123,30 +105,36 @@ class Jual extends Controller
     
     public function ubah( $id )
     {
-        //persiapan session 
-        $this->session->remove([ 'faktur', 'tanggal', 'idcustomer', 'barang' ]);
-        $this->session->set( 'edit', 'true' ); //
+        //-------------- hanya mempersiapkan session saja
+         
+        //hapus session lama 
+        $this->session->remove([ 'faktur', 'tanggal', 'idcustomer' ]);
+        $this->cart->destroy();
         
         $model = new JualModel();
         $result = $model->pilih( $id );
         
-        //prepare session
+        //persiapan session
+        $session[ 'edit' ] = 'true';
         $session[ 'faktur' ] = $result[ 0 ][ 'faktur' ];
         $session[ 'tanggal' ] = $result[ 0 ][ 'tanggal' ];
         $session[ 'idcustomer' ] = $result[ 0 ][ 'idcustomer' ];
         
-        for ($i = 0; $i < count ( $result ); $i++ ):
-            $session[ 'barang' ][] = array (
-                                'id'      => $result [ $i ] [ 'idbarang' ],
-                                'nama'    => $result [ $i ] [ 'namabarang' ],
-                                'harga'   => $result [ $i ] [ 'harga' ],
-                                'qty'     => $result [ $i ] [ 'qty' ],
-                                'diskon'  => $result [ $i ] [ 'diskon' ],
-                                'jumlah'  => ( (int)$result [ $i ] [ 'harga' ] - (int) $result [ $i ] [ 'diskon' ] ) * $result [ $i ] [ 'qty' ],
-                            );       
-        endfor;
+        $this->session->set( $session ); 
         
-        $this->session->set( $session ); //set session
+        for ($i = 0; $i < count ( $result ); $i++ ):
+            
+            $data = array(
+                    'id'      => $result [ $i ] [ 'idbarang' ],
+                    'qty'     => $result [ $i ] [ 'qty' ],
+                    'price'   => $result [ $i ] [ 'harga' ],
+                    'name'    => $result [ $i ] [ 'namabarang' ],
+                    'options' => array('diskon' => $result [ $i ] [ 'diskon' ] )
+                );
+
+             $this->cart->insert( $data );
+        
+        endfor;
         
         $this->form_ubah(); //buka form ubah
     }
@@ -158,6 +146,7 @@ class Jual extends Controller
         
         $data['customer'] = $cModel->tampil();
         $data['session'] = $this->session->get();
+        $data['cart'] = $this->cart->contents();
 
         echo view( 'templates/header', $data );
         echo view( 'jual/jual_ubah', $data ); //lokasi fisik file
@@ -173,32 +162,31 @@ class Jual extends Controller
     }
     
     public function ubah_barang()
-    {   
-        $barang = $this->session->get( 'barang' );
-        $row = $this->request->getVar('row');
-        $qty = $this->request->getVar('qtybarang');
-
+    {  
+        
+        $rowid = $this->request->getVar('rowid');
+        $id = $this->request->getVar( 'id' );
+        $nama = $this->request->getVar( 'namabarang' );
+        $harga = $this->request->getVar( 'hargabarang' );
+        $qty = $this->request->getVar( 'qtybarang' );
+        $diskon = $this->request->getVar( 'diskonbarang' );
+       
         if ( $qty  == '0' ):
 
-            //die('kosong');
-            unset( $_SESSION[ 'barang' ][ $row ]);
-
-            $barang = $this->session->get( 'barang' ); //ambil ulang array terbaru
-            $barang = array_values($barang); //reindex, agar urtu dari 0 lagi
-
-            $this->session->set( 'barang' , $barang );
+          $this->cart->remove( $rowid );
 
         else:
-
-            $harga = $this->request->getVar('hargabarang');
-            $qty = $this->request->getVar('qtybarang');
-            $diskon = $this->request->getVar('diskonbarang');
-            $jumlah = ( $harga - $diskon ) * $qty;
-
-            //update session
-            $_SESSION[ 'barang' ][ $row ][ 'qty' ] = $qty;
-            $_SESSION[ 'barang' ][ $row ][ 'diskon' ] = $diskon;
-            $_SESSION[ 'barang' ][ $row ][ 'jumlah' ] = $jumlah;
+        
+            $data = array(
+                        'rowid'   => $rowid,
+                        'id'      => $id,
+                        'qty'     => $qty,
+                        'price'   => $harga,
+                        'name'    => $nama,
+                        'options' => array( 'diskon' => $diskon ) 
+                    );
+                
+            $this->cart->update( $data );
 
         endif;
 
@@ -213,46 +201,46 @@ class Jual extends Controller
     {
         $model = new JualModel();
         
-        if ( ! $this->session->has('barang') ) :
+        if ( ! $this->session->has('faktur') ) :
             
-            $p['pesan'] = '<p>Ups!, Anda belum melakukan transaksi apapun.</p>'. anchor( 'jual/form', 'Lanjut' );
+            $p['pesan'] = '<p>Ups!, Anda belum memiliki nomer faktur.</p>'. anchor( 'jual/form', 'Lanjut' );
             echo view('templates/pesan', $p); //lokasi fisik file
 
-        else:
-
-            //simpan jual
-            $query = "insert into jual values ( '". $this->session->get( 'faktur' ) ."', '". 
-                                                    $this->session->get( 'tanggal' ) ."', '". 
-                                                    $this->session->get( 'idcustomer' ) ."' ); ";
-
-            $model->simpan( $query );
-            
-            //simpan detjual
-            $jumlah = count ( $this->session->get( 'barang' ) );
-            $barang = $this->session->get( 'barang' ); //tampung session
-
-            for ( $i = 0 ; $i < $jumlah ; $i++):
-            
-                $row = $barang[$i];
-            
-                $query = "insert into detjual values ( '". $this->session->get( 'faktur' ) ."', '". 
-                                                       $row[ 'id' ] ."', ". 
-                                                       $row[ 'qty' ] .", ". 
-                                                       $row[ 'harga' ] .", ". 
-                                                       $row[ 'diskon' ] ." ); "; 
-                
-                $model->simpan( $query );
-
-            endfor;
-            
-            
-            $this->session->set( 'edit', 'false' );
-            $this->session->remove([ 'faktur', 'tanggal', 'idcustomer', 'barang' ]);
-        
-            $data['pesan'] = '<p>Data tersimpan.</p>'.anchor( 'jual', 'Lanjut' );
-            echo view( 'templates/pesan', $data );
-
         endif;
+        
+         if ( ! $this->session->has('cart_contents') ) :
+            
+            $p['pesan'] = '<p>Wah, sepertinya anda belum memilih barang.</p>'. anchor( 'jual/form', 'Lanjut' );
+            echo view('templates/pesan', $p); //lokasi fisik file
+            
+        endif;
+
+        //simpan jual
+        $query = "insert into jual values ( '". $this->session->get( 'faktur' ) ."', '". 
+                                                $this->session->get( 'tanggal' ) ."', '". 
+                                                $this->session->get( 'idcustomer' ) ."' ); ";
+
+        $model->simpan( $query );
+
+        //simpan detjual
+        $cart_detail = $this->cart->contents() ;
+        
+        foreach( $cart_detail as $row ):
+            $query = "insert into detjual values ( '". $this->session->get( 'faktur' ) ."', '". 
+                                                   $row[ 'id' ] ."', ". 
+                                                   $row[ 'qty' ] .", ". 
+                                                   $row[ 'price' ] .", ". 
+                                                   $row[ 'options' ][ 'diskon' ] ." ); "; 
+        
+            $model->simpan( $query );
+        endforeach;
+        
+        $this->cart->destroy();    
+        $this->session->set( 'edit', 'false' );
+        $this->session->remove([ 'faktur', 'tanggal', 'idcustomer']);
+
+        $data['pesan'] = '<p>Data tersimpan.</p>'.anchor( 'jual', 'Lanjut' );
+        echo view( 'templates/pesan', $data );
     }
     
     public function hapus($id)

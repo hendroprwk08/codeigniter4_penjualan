@@ -13,3 +13,15 @@
  *
  * @link: https://codeigniter4.github.io/CodeIgniter4/
  */
+
+/**
+ * Helper function for the shopping cart service
+ *
+ * @var bool $getShared Return a shared service instance?
+ *
+ * @return mixed
+ */
+function cart(bool $getShared = true)
+{
+    return \Config\Services::cart($getShared);
+}

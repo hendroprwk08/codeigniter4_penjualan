@@ -13,10 +13,12 @@
 
 
 -- Dumping database structure for dbpenjualan
+DROP DATABASE IF EXISTS `dbpenjualan`;
 CREATE DATABASE IF NOT EXISTS `dbpenjualan` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `dbpenjualan`;
 
 -- Dumping structure for table dbpenjualan.barang
+DROP TABLE IF EXISTS `barang`;
 CREATE TABLE IF NOT EXISTS `barang` (
   `idbarang` varchar(3) NOT NULL,
   `namabarang` varchar(30) DEFAULT NULL,
@@ -28,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `barang` (
   PRIMARY KEY (`idbarang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.barang: ~15 rows (approximately)
+-- Dumping data for table dbpenjualan.barang: ~14 rows (approximately)
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
 REPLACE INTO `barang` (`idbarang`, `namabarang`, `hargabeli`, `hargajual`, `stok`, `idsupplier`, `expired`) VALUES
 	('B01', 'Lenovo', 5000000, 5300000, 24, 'SP010', '2017-12-02 00:00:00'),
@@ -44,11 +46,11 @@ REPLACE INTO `barang` (`idbarang`, `namabarang`, `hargabeli`, `hargajual`, `stok
 	('B11', 'Asus intel inside', 4000000, 4400000, 11, 'SP004', '2017-01-01 00:00:00'),
 	('B12', 'Aser Intel inside', 3500000, 4000000, 15, 'SP004', '2017-01-01 00:00:00'),
 	('B13', 'Hp core i3', 4500000, 5100000, 16, 'SP010', '2017-01-01 00:00:00'),
-	('B14', 'Hp core i5', 6000000, 6300000, 13, 'SP007', '2017-01-01 00:00:00'),
-	('B15', 'Hp core i7', 8500000, 9000000, 12, 'SP010', '2017-01-01 00:00:00');
+	('B14', 'Hp core i5', 6000000, 6300000, 13, 'SP007', '2017-01-01 00:00:00');
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 
 -- Dumping structure for table dbpenjualan.customer
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
   `idcustomer` varchar(5) NOT NULL,
   `namacustomer` varchar(20) DEFAULT NULL,
@@ -56,32 +58,34 @@ CREATE TABLE IF NOT EXISTS `customer` (
   PRIMARY KEY (`idcustomer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.customer: ~5 rows (approximately)
+-- Dumping data for table dbpenjualan.customer: ~4 rows (approximately)
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 REPLACE INTO `customer` (`idcustomer`, `namacustomer`, `telpcustomer`) VALUES
-	('MR001', 'Andi Ibnu', '081389889876'),
+	('MR001', 'Andi Ibnu Subarja', '081389889876'),
 	('MR002', 'Empat Sekawan PT', '021850000'),
 	('MR003', 'Bintang Emas UD', '021800000'),
-	('MR004', 'Yusuf', '021860000'),
 	('MR005', 'Triyani akhirina', '021870000');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 
 -- Dumping structure for table dbpenjualan.customer_backup
+DROP TABLE IF EXISTS `customer_backup`;
 CREATE TABLE IF NOT EXISTS `customer_backup` (
   `idcustomer` varchar(5) DEFAULT NULL,
   `namacustomer` varchar(20) DEFAULT NULL,
   `telpcustomer` varchar(12) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.customer_backup: ~3 rows (approximately)
+-- Dumping data for table dbpenjualan.customer_backup: ~4 rows (approximately)
 /*!40000 ALTER TABLE `customer_backup` DISABLE KEYS */;
 REPLACE INTO `customer_backup` (`idcustomer`, `namacustomer`, `telpcustomer`) VALUES
 	('MR02', 'tes', '0833'),
 	('jl', 'kljl', '313'),
-	('klj', 'kljl', '34234');
+	('klj', 'kljl', '34234'),
+	('MR004', 'Yusuf', '021860000');
 /*!40000 ALTER TABLE `customer_backup` ENABLE KEYS */;
 
 -- Dumping structure for table dbpenjualan.detjual
+DROP TABLE IF EXISTS `detjual`;
 CREATE TABLE IF NOT EXISTS `detjual` (
   `faktur` varchar(10) DEFAULT NULL,
   `idbarang` varchar(3) DEFAULT NULL,
@@ -94,13 +98,18 @@ CREATE TABLE IF NOT EXISTS `detjual` (
   CONSTRAINT `FK_detjual_jual` FOREIGN KEY (`faktur`) REFERENCES `jual` (`faktur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.detjual: ~1 rows (approximately)
+-- Dumping data for table dbpenjualan.detjual: ~5 rows (approximately)
 /*!40000 ALTER TABLE `detjual` DISABLE KEYS */;
 REPLACE INTO `detjual` (`faktur`, `idbarang`, `qty`, `harga`, `diskon`) VALUES
-	('FJ2002001', 'B13', 2, 5100000, 0);
+	('FJ2002002', 'B09', 3, 5300000, 0),
+	('FJ2002002', 'B11', 2, 4400000, 0),
+	('FJ2002002', 'B12', 7, 4000000, 0),
+	('FJ2002002', 'B06', 4, 7000000, 0),
+	('FJ2002001', 'B11', 1, 4400000, 0);
 /*!40000 ALTER TABLE `detjual` ENABLE KEYS */;
 
 -- Dumping structure for function dbpenjualan.fCekStatus
+DROP FUNCTION IF EXISTS `fCekStatus`;
 DELIMITER //
 CREATE FUNCTION `fCekStatus`(`id` varchar(5)
 ) RETURNS varchar(20) CHARSET utf8mb4
@@ -121,6 +130,7 @@ END//
 DELIMITER ;
 
 -- Dumping structure for table dbpenjualan.jual
+DROP TABLE IF EXISTS `jual`;
 CREATE TABLE IF NOT EXISTS `jual` (
   `faktur` varchar(10) NOT NULL,
   `tanggal` datetime DEFAULT NULL,
@@ -130,13 +140,15 @@ CREATE TABLE IF NOT EXISTS `jual` (
   CONSTRAINT `FK_jual_customer` FOREIGN KEY (`idcustomer`) REFERENCES `customer` (`idcustomer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.jual: ~1 rows (approximately)
+-- Dumping data for table dbpenjualan.jual: ~2 rows (approximately)
 /*!40000 ALTER TABLE `jual` DISABLE KEYS */;
 REPLACE INTO `jual` (`faktur`, `tanggal`, `idcustomer`) VALUES
-	('FJ2002001', '2020-02-14 00:00:00', 'MR004');
+	('FJ2002001', '2020-02-11 00:00:00', 'MR003'),
+	('FJ2002002', '2020-02-11 00:00:00', 'MR001');
 /*!40000 ALTER TABLE `jual` ENABLE KEYS */;
 
 -- Dumping structure for procedure dbpenjualan.spDelJual
+DROP PROCEDURE IF EXISTS `spDelJual`;
 DELIMITER //
 CREATE PROCEDURE `spDelJual`(
 	IN `id` VARCHAR(50)
@@ -148,6 +160,7 @@ END//
 DELIMITER ;
 
 -- Dumping structure for procedure dbpenjualan.spGetAllSupplier
+DROP PROCEDURE IF EXISTS `spGetAllSupplier`;
 DELIMITER //
 CREATE PROCEDURE `spGetAllSupplier`()
 BEGIN
@@ -156,6 +169,7 @@ END//
 DELIMITER ;
 
 -- Dumping structure for procedure dbpenjualan.spInsSupplier
+DROP PROCEDURE IF EXISTS `spInsSupplier`;
 DELIMITER //
 CREATE PROCEDURE `spInsSupplier`(
   in pid varchar(5),
@@ -172,6 +186,7 @@ END//
 DELIMITER ;
 
 -- Dumping structure for table dbpenjualan.supplier
+DROP TABLE IF EXISTS `supplier`;
 CREATE TABLE IF NOT EXISTS `supplier` (
   `idsupplier` varchar(5) NOT NULL,
   `namasupplier` varchar(20) DEFAULT NULL,
@@ -182,19 +197,19 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   PRIMARY KEY (`idsupplier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table dbpenjualan.supplier: ~7 rows (approximately)
+-- Dumping data for table dbpenjualan.supplier: ~6 rows (approximately)
 /*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
 REPLACE INTO `supplier` (`idsupplier`, `namasupplier`, `alamatsupplier`, `telpsupplier`, `emailsupplier`, `picsupplier`) VALUES
-	('SP002', 'Tiga Roda Bagus PT', 'Depok', '021850000', 'becak@yahoo.com', 'Rasyidah'),
+	('SP002', 'Tiga Roda Bagus PD', 'Depok', '021850000', 'becak@yahoo.com', 'Rasyidah'),
 	('SP003', 'Batubara Corp', 'Jogjakarta', '021800000', 'batubaracorporation.com', 'Ashraf'),
 	('SP004', 'Indo Tiga PT', 'Depok', '021860000', 'bertiga@yahoo.com', 'Ahmad'),
 	('SP006', 'indah Jaya PT', 'Depok', '021880000', 'indahjaya@yahoo.com', 'Indah'),
 	('SP007', 'Candra Jaya PT', 'Depok', '021890000', 'candrajaya@yahoo.com', 'Candra'),
-	('SP010', 'Marga Jaya PT', 'Bandung', '08134563421', 'marketing@mjaya.com', 'nandi'),
-	('SP011', 'OASIS CV', 'Jakarta', '0218978765', 'marketing@oasis.id', 'risma');
+	('SP010', 'Marga Jaya PT', 'Bandung', '08134563421', 'marketing@mjaya.com', 'nandi');
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 
 -- Dumping structure for view dbpenjualan.vbarangsupplier
+DROP VIEW IF EXISTS `vbarangsupplier`;
 -- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vbarangsupplier` (
 	`idbarang` VARCHAR(3) NOT NULL COLLATE 'utf8mb4_general_ci',
@@ -208,6 +223,7 @@ CREATE TABLE `vbarangsupplier` (
 ) ENGINE=MyISAM;
 
 -- Dumping structure for view dbpenjualan.vcompletejual
+DROP VIEW IF EXISTS `vcompletejual`;
 -- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vcompletejual` (
 	`faktur` VARCHAR(10) NOT NULL COLLATE 'utf8mb4_general_ci',
@@ -221,6 +237,7 @@ CREATE TABLE `vcompletejual` (
 ) ENGINE=MyISAM;
 
 -- Dumping structure for view dbpenjualan.vdetjual
+DROP VIEW IF EXISTS `vdetjual`;
 -- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vdetjual` (
 	`faktur` VARCHAR(10) NULL COLLATE 'utf8mb4_general_ci',
@@ -233,6 +250,7 @@ CREATE TABLE `vdetjual` (
 ) ENGINE=MyISAM;
 
 -- Dumping structure for view dbpenjualan.vjual
+DROP VIEW IF EXISTS `vjual`;
 -- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vjual` (
 	`faktur` VARCHAR(10) NOT NULL COLLATE 'utf8mb4_general_ci',
@@ -243,6 +261,7 @@ CREATE TABLE `vjual` (
 ) ENGINE=MyISAM;
 
 -- Dumping structure for trigger dbpenjualan.delBackUpCustomer
+DROP TRIGGER IF EXISTS `delBackUpCustomer`;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE trigger delBackUpCustomer
@@ -255,6 +274,7 @@ DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 -- Dumping structure for view dbpenjualan.vbarangsupplier
+DROP VIEW IF EXISTS `vbarangsupplier`;
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vbarangsupplier`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vbarangsupplier` AS select 
@@ -266,6 +286,7 @@ from barang left join supplier
 on Barang.idsupplier = supplier.idsupplier ;
 
 -- Dumping structure for view dbpenjualan.vcompletejual
+DROP VIEW IF EXISTS `vcompletejual`;
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vcompletejual`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vcompletejual` AS SELECT 
@@ -282,6 +303,7 @@ INNER JOIN barang ON detjual.idbarang = barang.idbarang
 INNER JOIN jual ON detjual.faktur = jual.faktur ;
 
 -- Dumping structure for view dbpenjualan.vdetjual
+DROP VIEW IF EXISTS `vdetjual`;
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vdetjual`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vdetjual` AS SELECT 
@@ -296,6 +318,7 @@ FROM detjual INNER JOIN barang
 ON detjual.idbarang = barang.idbarang ;
 
 -- Dumping structure for view dbpenjualan.vjual
+DROP VIEW IF EXISTS `vjual`;
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vjual`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vjual` AS SELECT 

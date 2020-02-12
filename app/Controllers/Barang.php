@@ -6,107 +6,101 @@ use App\Models\SupplierModel ; //import
 
 class Barang extends Controller
 {
+    
+    public function __construct()
+    {
+        helper( [ 'url', 'form' ] );
+    }
 
-	public function index()
-	{
-	    helper('url'); //load url helper
 
-	    $model = new BarangModel();
+    public function index()
+    {
+        $model = new BarangModel();
 
-	    $data['title'] = 'Tabel Barang';
+        $data['title'] = 'Tabel Barang';
+        $data['data'] = $model->tampil();
 
-	    /*ambil data supplier, karena memerlukan informasi
-	     * supplier yang akan ditampilkan pada barang
-	     */
-	    $data['data'] = $model->tampil();
+        echo view( 'templates/header', $data );
+        echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-	    echo view( 'templates/header', $data );
-	    echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
-	}
+    public function form()
+    {
+        $smodel = new SupplierModel();
 
-	public function form()
-	{
-		helper('form'); //load form helper
+        $data['title'] = 'Tambah Data Barang';
+        $data['supplier'] = $smodel->tampil();
 
-		$smodel = new SupplierModel();
+        echo view( 'templates/header', $data );
+        echo view( 'barang/barang', $data ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-		$data['title'] = 'Tambah Data Barang';
-		$data['supplier'] = $smodel->tampil();
+    public function simpan()
+    {
+        $model = new BarangModel();
 
-		echo view( 'templates/header', $data );
-	    echo view( 'barang/barang', $data ); //lokasi fisik file
-		echo view( 'templates/footer' );
-	}
+        $data = [
+            'idbarang'   => $this->request->getVar('id'),
+            'namabarang' => $this->request->getVar('nama'),
+            'hargabeli'  => $this->request->getVar('beli'),
+            'hargajual'  => $this->request->getVar('jual'),
+            'stok'      => $this->request->getVar('stok'),
+            'idsupplier' => $this->request->getVar('idsupplier'),
+            'expired'    => $this->request->getVar('expired')
+        ];
 
-	public function simpan()
-	{
-	    helper('url');
+        $model->simpan( $data );
 
-		$model = new BarangModel();
+        $p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( 'barang', 'Lanjut' );
 
-		$data = [
-		    'idbarang'   => $this->request->getVar('id'),
-		    'namabarang' => $this->request->getVar('nama'),
-		    'hargabeli'  => $this->request->getVar('beli'),
-		    'hargajual'  => $this->request->getVar('jual'),
-		    'stok'      => $this->request->getVar('stok'),
-		    'idsupplier' => $this->request->getVar('idsupplier'),
-		    'expired'    => $this->request->getVar('expired')
-		];
+        echo view('templates/pesan', $p); //lokasi fisik file
+    }
 
-		$model->simpan( $data );
+    public function ubah( $id )
+    {
+        $model = new BarangModel();
 
-		$p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( 'barang', 'Lanjut' );
+        $data['title'] = 'Pembaruan Data Supplier';
+        $data['barang'] = $model->pilih( $id );
 
-		echo view('templates/pesan', $p); //lokasi fisik file
-	}
+        $smodel = new SupplierModel();
+        $data['supplier'] = $smodel->tampil();
 
-	public function ubah( $id )
-	{
-	    helper('form'); //load form helper
+        echo view( 'templates/header', $data );
+        echo view( 'barang/barang_ubah', $data ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-	    $model = new BarangModel();
+    public function perbarui()
+    {
+        $data = [
+            'namabarang' => $this->request->getVar('nama'),
+            'hargabeli'  => $this->request->getVar('beli'),
+            'hargajual'  => $this->request->getVar('jual'),
+            'stok'      => $this->request->getVar('stok'),
+            'idsupplier' => $this->request->getVar('idsupplier'),
+            'expired'    => $this->request->getVar('expired')
+        ];
 
-	    $data['title'] = 'Pembaruan Data Supplier';
-	    $data['barang'] = $model->pilih( $id );
+        $model = new BarangModel();
 
-	    $smodel = new SupplierModel();
-	    $data['supplier'] = $smodel->tampil();
+        $model->perbarui( $this->request->getVar('id'), $data );
 
-	    echo view( 'templates/header', $data );
-	    echo view( 'barang/barang_ubah', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
-	}
+        $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' berhasil diperbarui.</p>'.anchor('barang', 'Lanjut');
 
-	public function perbarui()
-	{
-	    $data = [
-	        'namabarang' => $this->request->getVar('nama'),
-	        'hargabeli'  => $this->request->getVar('beli'),
-	        'hargajual'  => $this->request->getVar('jual'),
-	        'stok'      => $this->request->getVar('stok'),
-	        'idsupplier' => $this->request->getVar('idsupplier'),
-	        'expired'    => $this->request->getVar('expired')
-	    ];
+        echo view( 'templates/pesan', $data ); //lokasi fisik file*/
+    }
 
-	    $model = new BarangModel();
+    public function hapus( $id )
+    {
+        $model = new BarangModel();
 
-	    $model->perbarui( $this->request->getVar('id'), $data );
+        $model->hapus( $id );
 
-	    $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' berhasil diperbarui.</p>'.anchor('barang', 'Lanjut');
+        $data['pesan'] = '<p>Data dihapus.</p>'.anchor( 'barang', 'Lanjut' );
 
-	    echo view( 'templates/pesan', $data ); //lokasi fisik file*/
-	}
-
-	public function hapus( $id )
-	{
-	    $model = new BarangModel();
-
-	    $model->hapus( $id );
-
-	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor( 'barang', 'Lanjut' );
-
-	    echo view( 'templates/pesan', $data );
-	}
+        echo view( 'templates/pesan', $data );
+    }
 }

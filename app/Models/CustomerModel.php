@@ -22,7 +22,7 @@ class CustomerModel extends Model
     public function tampil()
     {
         try {
-            return  $this->findAll();;
+            return  $this->orderBy('idcustomer', 'desc')->findAll();
         }
         catch (\Exception $e)
         {
@@ -45,7 +45,7 @@ class CustomerModel extends Model
     public function pilih($id)
     {
         try {
-          return $this->where( 'idcustomer', $id )->findAll();
+          return $this->asArray()->where( 'idcustomer', $id )->findAll();
         }
         catch (\Exception $e)
         {

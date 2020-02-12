@@ -6,7 +6,8 @@ class Home extends BaseController
 	public function index()
 	{
 	    echo ('home page');
-		//return view('welcome_message');
+	    echo anchor ('supplier/', 'Lanjut');
+            //return view('supplier');
 	}
 	
 	public function second()

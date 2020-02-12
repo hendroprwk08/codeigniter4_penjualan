@@ -13,7 +13,7 @@ function hitung()
 <?php
 print_r ($session);
 
-echo form_open('jual/pilih_barang');
+echo form_open('jual/set_header');
 
 echo 'Faktur: '. form_input( array( 'name'      => 'faktur', 
                                     'maxlength' => '10',
@@ -31,6 +31,10 @@ endforeach;
 
 $customer = isset( $session[ 'idcustomer' ] ) ? $session[ 'idcustomer' ] : null;
 echo 'Customer: '. form_dropdown('idcustomer', $option, $customer) .'</br>';
+
+echo form_submit('submit', 'Set Faktur');
+
+echo  form_close();
 
 $att = [
     'width'      => 350,    
@@ -56,6 +60,8 @@ echo '<p>'. anchor_popup('jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
     <td>&nbsp;</td>
 </tr> 
 
+<?= form_open('jual/pilih_barang'); ?>
+
 <tr>
     <td><?= form_input( array( 'name' => 'id' , 'size' => '2', 'readonly'  => 'readonly', 'style' => 'background:#FFFFF0' ) ) ?></td>
     <td><?= form_input( array( 'name' => 'nama' , 'size' => '20', 'readonly'  => 'readonly', 'style' => 'background:#FFFFF0' ) ) ?></td>
@@ -64,38 +70,38 @@ echo '<p>'. anchor_popup('jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
     <td><?= form_input( array( 'name' => 'diskon' , 'value' => '0', 'size' => '5', 'onkeyup' => 'hitung()' ) ) ?></td>
     <td><?= form_input( array( 'name' => 'jumlah' , 'value' => '0', 'size' => '5', 'readonly'  => 'readonly', 'style' => 'background:#FFFFF0' ) ) ?></td>
     <td><?= form_submit('submit', 'Pilih') ?></td>
-
+</tr>
 <?= form_close(); ?>
 
 <?php 
-if ( isset ( $session[ 'barang' ] ) ): 
+$total = 0;
 
-    $jumlah = count ( $session[ 'barang' ] );
-    $total = 0;
-  
-    //foreach( $session[ 'barang' ] as $key => $val ):
-    for ( $i = 0 ; $i < $jumlah ; $i++):
-        $row = $session[ 'barang' ][$i];
-        $total += $row[ 'jumlah' ];
-
+if ( isset ( $cart ) ): 
+    foreach( $cart as $row ):
+    
         echo form_open( 'jual/ubah_barang');
-        echo form_hidden( array( 'row' =>  $i, 'hargabarang' =>  $row[ 'harga' ] ) );
-        //var_dump($val);
+        echo form_hidden( [ 'rowid'       => $row[ 'rowid' ], 
+                            'id'          => $row[ 'id' ],
+                            'namabarang'  => $row[ 'name' ],
+                            'hargabarang' => $row[ 'price' ] ]);
+        
+        $subtotal = ($row[ 'price' ] - $row[ 'options' ][ 'diskon' ] ) * $row[ 'qty' ];
+        $total += $subtotal;
 ?>
-     </tr>
+
+    </tr>
         <td><?= $row[ 'id' ]; ?></td>
-        <td><?= $row[ 'nama' ]; ?></td>
-        <td align="right"><?= number_format( $row[ 'harga' ] ); ?></td>
+        <td><?= $row[ 'name' ]; ?></td>
+        <td align="right"><?= number_format( $row[ 'price' ] ); ?></td>
         <td align="right"><?= form_input( array( 'name' => 'qtybarang' , 'value' => $row[ 'qty' ], 'size' => '2', 'align' => 'right', 'onkeyup' => 'hitung()' ) ); ?></td>
-        <td align="right"><?= form_input( array( 'name' => 'diskonbarang', 'value' => $row[ 'diskon' ], 'size' => '5', 'align' => 'right', 'onkeyup' => 'hitung()' ) ); ?></td>
-        <td align="right"><?= number_format( $row[ 'jumlah' ] ); ?></td>
+        <td align="right"><?= form_input( array( 'name' => 'diskonbarang', 'value' => $row[ 'options' ][ 'diskon' ], 'size' => '5', 'align' => 'right', 'onkeyup' => 'hitung()' ) ); ?></td>
+        <td align="right"><?= number_format( $subtotal ); ?></td>
         <td><?= form_submit('submit', 'Ubah') ?></td>
     </tr>
     
 <?php
         echo form_close();
-    endfor;
-    //endforeach;
+    endforeach;
 endif;    
 ?>
         <tr><td colspan='5'>&nbsp;</td><td><?= number_format( $total ) ?></td><td>&nbsp;</td></tr>

@@ -9,8 +9,6 @@ https://codeigniter4.github.io/userguide/models/model.html
 https://codeigniter4.github.io/userguide/tutorial/news_section.html
 */
 
-
-
 class BarangModel extends Model
 {
     //nama table
@@ -24,16 +22,21 @@ class BarangModel extends Model
                                 'stok',
                                 'idsupplier',
                                 'expired'];
+    
+    public $db;
+
+    public function __construct() {
+        $this->db = \Config\Database::connect();
+    }
 
     public function tampil()
     {
-        //die('masuk');
         try {
             //khusus bagian ini: menggunakan view yang telah dibuat pd database            
-            $db = \Config\Database::connect(); //sambungkan database
-            $builder = $db->table('vbarangsupplier');
-            $query = $builder->get(); //ambil data
+            $builder = $this->db->table('vbarangsupplier');
+            $query = $builder->orderBy('idbarang', 'desc')->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array
+            $this->db->close();
             
             return $result; 
         }
@@ -43,38 +46,36 @@ class BarangModel extends Model
         }
     }
     
-    public function simpan( $data )
+     public function pilih( $id )
     {
-        //die( print_r( $data ) );
         try {
-            $this->insert( $data );
+            return $this->asArray()->where( 'idbarang', $id)->findAll(); //harus array
         }
         catch (\Exception $e)
         {
             die('Error: '. $e->getMessage());
         }
-    }
+    }   
+   
     
-    public function pilih($id)
-    {   
+    public function total()
+    {
         try {
-            //khusus bagian ini: menggunakan view yang telah dibuat pd database
-            $db = \Config\Database::connect(); //sambungkan database
-            $builder = $db->table('vbarangsupplier')->where('idbarang', $id);
+            $builder = $this->db->table('vbarangsupplier');
             $query = $builder->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array
+            $hasil = count ( $result );
+            $this->db->close();
             
-            //die ( print_r( $result ));
-            
-            return $result; 
+            return $hasil;
         }
         catch (\Exception $e)
         {
             die('Error: '. $e->getMessage());
         }
-    }
+    }   
     
-    public function perbarui( $idsupplier, $data )
+    public function perbarui( $id, $data )
     {       
         try {
             
@@ -84,7 +85,7 @@ class BarangModel extends Model
              * $this->update($id, $data);
              */
             
-            $this->where( 'idbarang', $idsupplier)
+            $this->where( 'idbarang', $id)
                  ->set( $data )
                  ->update();
         }
