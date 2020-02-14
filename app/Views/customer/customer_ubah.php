@@ -1,7 +1,7 @@
 <?php
 if ( ! empty( $data ) && is_array( $data ) ) :
 
-    echo form_open('customer/perbarui');
+    echo form_open('../customer/perbarui');
 
     echo 'ID: '. form_input( array( 'name'      => 'id',
                                     'maxlength' => '3',

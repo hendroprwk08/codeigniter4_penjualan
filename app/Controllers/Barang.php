@@ -50,10 +50,10 @@ class Barang extends Controller
             'idsupplier' => $this->request->getVar('idsupplier'),
             'expired'    => $this->request->getVar('expired')
         ];
-
+        
         $model->simpan( $data );
 
-        $p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( 'barang', 'Lanjut' );
+        $p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../barang', 'Lanjut' );
 
         echo view('templates/pesan', $p); //lokasi fisik file
     }
@@ -88,7 +88,7 @@ class Barang extends Controller
 
         $model->perbarui( $this->request->getVar('id'), $data );
 
-        $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' berhasil diperbarui.</p>'.anchor('barang', 'Lanjut');
+        $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' berhasil diperbarui.</p>'.anchor('../barang', 'Lanjut');
 
         echo view( 'templates/pesan', $data ); //lokasi fisik file*/
     }
@@ -99,7 +99,7 @@ class Barang extends Controller
 
         $model->hapus( $id );
 
-        $data['pesan'] = '<p>Data dihapus.</p>'.anchor( 'barang', 'Lanjut' );
+        $data['pesan'] = '<p>Data dihapus.</p>'.anchor( '../barang', 'Lanjut' );
 
         echo view( 'templates/pesan', $data );
     }

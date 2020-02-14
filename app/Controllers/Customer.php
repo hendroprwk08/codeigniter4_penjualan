@@ -49,7 +49,7 @@ class Customer extends Controller
 
 		$model->simpan( $data );
 
-		$p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( 'customer', 'Lanjut' );
+		$p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../customer', 'Lanjut' );
 
 		echo view('templates/pesan', $p); //lokasi fisik file
 	}
@@ -79,7 +79,7 @@ class Customer extends Controller
 
 	    $model->perbarui( $this->request->getVar('id'), $data );
 
-	    $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' - '. $this->request->getVar('nama') .' berhasil diperbarui.</p>'.anchor('customer', 'Lanjut');
+	    $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' - '. $this->request->getVar('nama') .' berhasil diperbarui.</p>'.anchor('../customer', 'Lanjut');
 
 	    echo view( 'templates/pesan', $data ); //lokasi fisik file*/
 	}
@@ -90,7 +90,7 @@ class Customer extends Controller
 
 	    $model->hapus( $id );
 
-	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor( 'customer', 'Lanjut' );
+	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor( '../customer', 'Lanjut' );
 
 	    echo view( 'templates/pesan', $data );
 	}

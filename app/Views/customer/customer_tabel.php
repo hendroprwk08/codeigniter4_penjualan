@@ -1,5 +1,5 @@
 <?php
-echo anchor( 'customer/form', 'Tambah' );
+echo anchor( '../customer/form', 'Tambah' );
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
@@ -18,8 +18,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
     		<td><?= $row['namacustomer'] ?></td>
     		<td><?= $row['telpcustomer'] ?></td>
 				<td>
-					<?= anchor( 'customer/ubah/'. $row['idcustomer'], 'Ubah' ) ?>
-					<?= anchor( 'customer/hapus/'. $row['idcustomer'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
+					<?= anchor( '../customer/ubah/'. $row['idcustomer'], 'Ubah' ) ?>
+					<?= anchor( '../customer/hapus/'. $row['idcustomer'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
 				</td>
      </tr>
 

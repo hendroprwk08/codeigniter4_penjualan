@@ -24,8 +24,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
     		<td><?= $row['emailsupplier'] ?></td>
     		<td><?= $row['picsupplier'] ?></td>
 			<td>
-				<?= anchor( 'supplier/ubah/'. $row['idsupplier'], 'Ubah' ) ?>
-				<?= anchor( 'supplier/hapus/'. $row['idsupplier'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
+				<?= anchor( '../supplier/ubah/'. $row['idsupplier'], 'Ubah' ) ?>
+				<?= anchor( '../supplier/hapus/'. $row['idsupplier'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
 			</td>
          </tr>
 

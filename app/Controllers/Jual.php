@@ -202,17 +202,15 @@ class Jual extends Controller
         $model = new JualModel();
         
         if ( ! $this->session->has('faktur') ) :
-            
             $p['pesan'] = '<p>Ups!, Anda belum memiliki nomer faktur.</p>'. anchor( 'jual/form', 'Lanjut' );
             echo view('templates/pesan', $p); //lokasi fisik file
-
+            die();    
         endif;
         
          if ( ! $this->session->has('cart_contents') ) :
-            
             $p['pesan'] = '<p>Wah, sepertinya anda belum memilih barang.</p>'. anchor( 'jual/form', 'Lanjut' );
             echo view('templates/pesan', $p); //lokasi fisik file
-            
+            die();
         endif;
 
         //simpan jual
@@ -239,7 +237,7 @@ class Jual extends Controller
         $this->session->set( 'edit', 'false' );
         $this->session->remove([ 'faktur', 'tanggal', 'idcustomer']);
 
-        $data['pesan'] = '<p>Data tersimpan.</p>'.anchor( 'jual', 'Lanjut' );
+        $data['pesan'] = '<p>Data tersimpan.</p>'.anchor( '../jual', 'Lanjut' );
         echo view( 'templates/pesan', $data );
     }
     

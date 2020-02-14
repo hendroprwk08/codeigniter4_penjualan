@@ -1,10 +1,8 @@
 <?php
-print_r ( $barang );
-
 if ( ! empty( $barang ) && is_array( $barang ) ) :
 
     //menampilkan error hasil validasi form
-    echo form_open('barang/perbarui');
+    echo form_open('../barang/perbarui');
     
     echo 'ID: '. form_input( array( 'name'      => 'id',
                                     'maxlength' => '3',
@@ -23,7 +21,7 @@ if ( ! empty( $barang ) && is_array( $barang ) ) :
     
     echo 'Supplier: '. form_dropdown('idsupplier', $option, $barang[0]['idsupplier']) .'</br>';
     
-    echo 'Expired: '. form_input('expired', $barang[0]['expired']) .'</br>';
+    echo 'Expired: '. form_input('expired', substr( $barang[0]['expired'], 0, 10 ) ) .'</br>';
     echo form_submit( 'perbarui', 'Perbarui data' );
     echo form_close();
 

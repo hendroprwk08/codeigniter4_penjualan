@@ -57,6 +57,17 @@ class BarangModel extends Model
         }
     }   
    
+    public function simpan( $data )
+    {
+        //die( print_r( $data ) );
+        try {
+            $this->insert( $data );
+        }
+        catch (\Exception $e)
+        {
+            die('Error: '. $e->getMessage());
+        }
+    }
     
     public function total()
     {

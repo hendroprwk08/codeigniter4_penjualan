@@ -1,5 +1,5 @@
 <?php
-echo anchor( 'jual/form', 'Tambah' );
+echo anchor( '../jual/form', 'Tambah' );
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
@@ -20,8 +20,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
     		<td><?= $row['idcustomer'] ?> - <?= $row['namacustomer'] ?></td>
     		<td><?= number_format( $row['total'] ) ?></td>
     		<td>
-				<?= anchor( 'jual/ubah/'. $row['faktur'], 'Ubah' ) ?>
-				<?= anchor( 'jual/hapus/'. $row['faktur'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
+				<?= anchor( '../jual/ubah/'. $row['faktur'], 'Ubah' ) ?>
+				<?= anchor( '../jual/hapus/'. $row['faktur'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
 			</td>
          </tr>
 

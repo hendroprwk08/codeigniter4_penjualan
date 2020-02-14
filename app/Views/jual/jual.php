@@ -13,7 +13,7 @@ function hitung()
 <?php
 print_r ($session);
 
-echo form_open('jual/set_header');
+echo form_open('../jual/set_header');
 
 echo 'Faktur: '. form_input( array( 'name'      => 'faktur', 
                                     'maxlength' => '10',
@@ -48,7 +48,7 @@ $att = [
     'window_name' => '_blank',    
 ];
 
-echo '<p>'. anchor_popup('jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
+echo '<p>'. anchor_popup('../jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
 ?>
 
 <table border="1" style="border-collapse: collapse">
@@ -62,7 +62,7 @@ echo '<p>'. anchor_popup('jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
     <td>&nbsp;</td>
 </tr> 
 
-<?= form_open('jual/pilih_barang'); ?>
+<?= form_open('../jual/pilih_barang'); ?>
 
 <tr>
     <td><?= form_input( array( 'name' => 'id' , 'size' => '2', 'readonly'  => 'readonly', 'style' => 'background:#FFFFF0' ) ) ?></td>
@@ -82,7 +82,7 @@ $total = 0;
 if ( isset ( $cart ) ): 
     foreach( $cart as $row ):
     
-        echo form_open( 'jual/ubah_barang');
+        echo form_open( '../jual/ubah_barang');
         echo form_hidden( [ 'rowid'       => $row[ 'rowid' ], 
                             'id'          => $row[ 'id' ],
                             'namabarang'  => $row[ 'name' ],

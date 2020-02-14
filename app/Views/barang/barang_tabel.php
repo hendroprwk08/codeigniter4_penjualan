@@ -1,5 +1,5 @@
 <?php
-echo anchor( 'barang/form', 'Tambah' );
+echo anchor( '../barang/form', 'Tambah' );
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
@@ -30,8 +30,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
 			</td>
     		<td><?= $row['expired'] ?></td>
 			<td>
-				<?= anchor( 'barang/ubah/'. $row['idbarang'], 'Ubah' ) ?>
-				<?= anchor( 'barang/hapus/'. $row['idbarang'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
+				<?= anchor( '../barang/ubah/'. $row['idbarang'], 'Ubah' ) ?>
+				<?= anchor( '../barang/hapus/'. $row['idbarang'], 'Hapus', array( 'onClick' => 'return confirm("Hapus data?")' ) ) ?>
 			</td>
          </tr>
 
