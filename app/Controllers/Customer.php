@@ -5,93 +5,93 @@ use App\Models\CustomerModel; //import
 
 class Customer extends Controller
 {
+    //kode yang dijalankan pertama kali saat Customer digunakan
+    public function __construct() 
+    {
+        helper( [ 'url', 'form' ] ); //load url helper
+    }
 
-	public function index()
-	{
-	    helper('url'); //load url helper
+    public function index()
+    {
+        //panggil model
+        $model = new CustomerModel();
 
-	    $model = new CustomerModel();
+        $data['title'] = 'Tabel Customer';
+        $data['data'] = $model->tampil();
 
-	    $data['title'] = 'Tabel Customer';
+        echo view( 'templates/header', $data );
+        echo view( 'customer/customer_tabel', $data ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-	    /*ambil data supplier, karena memerlukan informasi
-	     * supplier yang akan ditampilkan pada barang
-	     */
-	    $data['data'] = $model->tampil();
+    public function form()
+    {
+        helper('form'); //load form helper
 
-	    echo view( 'templates/header', $data );
-	    echo view( 'customer/customer_tabel', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
-	}
+        $data['title'] = 'Tambah Data Barang';
 
-	public function form()
-	{
-            helper('form'); //load form helper
+        echo view( 'templates/header', $data );
+        echo view( 'customer/customer' ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-            $data['title'] = 'Tambah Data Barang';
+    public function simpan()
+    {
+        helper('url');
 
-            echo view( 'templates/header', $data );
-            echo view( 'customer/customer' ); //lokasi fisik file
-            echo view( 'templates/footer' );
-	}
+            $model = new CustomerModel();
 
-	public function simpan()
-	{
-	    helper('url');
+            $data = [
+                'idcustomer'   => $this->request->getVar('id'),
+                'namacustomer' => $this->request->getVar('nama'),
+                'telpcustomer'  => $this->request->getVar('telp')
+            ];
 
-		$model = new CustomerModel();
+            $model->simpan( $data );
 
-		$data = [
-		    'idcustomer'   => $this->request->getVar('id'),
-		    'namacustomer' => $this->request->getVar('nama'),
-		    'telpcustomer'  => $this->request->getVar('telp')
-		];
+            $p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../customer', 'Lanjut' );
 
-		$model->simpan( $data );
+            echo view('templates/pesan', $p); //lokasi fisik file
+    }
 
-		$p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../customer', 'Lanjut' );
+    public function ubah( $id )
+    {
+        helper('form'); //load form helper
 
-		echo view('templates/pesan', $p); //lokasi fisik file
-	}
+        $model = new CustomerModel();
 
-	public function ubah( $id )
-	{
-	    helper('form'); //load form helper
+        $data['title'] = 'Pembaruan Data Supplier';
+        $data['data'] = $model->pilih( $id );
 
-	    $model = new CustomerModel();
+        echo view( 'templates/header', $data );
+        echo view( 'customer/customer_ubah', $data ); //lokasi fisik file
+        echo view( 'templates/footer' );
+    }
 
-	    $data['title'] = 'Pembaruan Data Supplier';
-	    $data['data'] = $model->pilih( $id );
+    public function perbarui()
+    {
+        $data = [
+            'namacustomer' => $this->request->getVar('nama'),
+            'telpcustomer' => $this->request->getVar('telp')
+        ];
 
-	    echo view( 'templates/header', $data );
-	    echo view( 'customer/customer_ubah', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
-	}
+        $model = new CustomerModel();
 
-	public function perbarui()
-	{
-	    $data = [
-	        'namacustomer' => $this->request->getVar('nama'),
-	        'telpcustomer' => $this->request->getVar('telp')
-	    ];
+        $model->perbarui( $this->request->getVar('id'), $data );
 
-	    $model = new CustomerModel();
+        $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' - '. $this->request->getVar('nama') .' berhasil diperbarui.</p>'.anchor('../customer', 'Lanjut');
 
-	    $model->perbarui( $this->request->getVar('id'), $data );
+        echo view( 'templates/pesan', $data ); //lokasi fisik file*/
+    }
 
-	    $data['pesan'] = '<p>ID: '. $this->request->getVar('id') .' - '. $this->request->getVar('nama') .' berhasil diperbarui.</p>'.anchor('../customer', 'Lanjut');
+    public function hapus( $id )
+    {
+        $model = new CustomerModel();
 
-	    echo view( 'templates/pesan', $data ); //lokasi fisik file*/
-	}
+        $model->hapus( $id );
 
-	public function hapus( $id )
-	{
-	    $model = new CustomerModel();
+        $data['pesan'] = '<p>Data dihapus.</p>'.anchor( '../customer', 'Lanjut' );
 
-	    $model->hapus( $id );
-
-	    $data['pesan'] = '<p>Data dihapus.</p>'.anchor( '../customer', 'Lanjut' );
-
-	    echo view( 'templates/pesan', $data );
-	}
+        echo view( 'templates/pesan', $data );
+    }
 }

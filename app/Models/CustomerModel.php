@@ -15,18 +15,18 @@ class CustomerModel extends Model
     protected $table = 'customer'; //wajib table [baku]
 
     //mempresentasikan kolom pada tabel [ harus sama ]
-    protected $allowedFields = ['idcustomer',
-                                'namacustomer',
-                                'telpcustomer'];
+    protected $allowedFields = [ 'idcustomer',
+                                 'namacustomer',
+                                 'telpcustomer' ];
 
     public function tampil()
     {
         try {
-            return  $this->orderBy('idcustomer', 'desc')->findAll();
+            return  $this->orderBy( 'idcustomer', 'desc' )->findAll();
         }
         catch (\Exception $e)
         {
-            die('Error: '. $e->getMessage());
+            die( 'Error: '. $e->getMessage() );
         }
     }
 
