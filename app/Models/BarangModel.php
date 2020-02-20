@@ -59,7 +59,6 @@ class BarangModel extends Model
    
     public function simpan( $data )
     {
-        //die( print_r( $data ) );
         try {
             $this->insert( $data );
         }
@@ -106,7 +105,7 @@ class BarangModel extends Model
         }
     }
     
-    public function hapus($id)
+    public function hapus( $id )
     {       
         try {
             $this->where( 'idbarang', $id )->delete();

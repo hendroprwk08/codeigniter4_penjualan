@@ -39,21 +39,20 @@ class Barang extends Controller
 
     public function simpan()
     {
-        $model = new BarangModel();
-
         $data = [
             'idbarang'   => $this->request->getVar('id'),
             'namabarang' => $this->request->getVar('nama'),
             'hargabeli'  => $this->request->getVar('beli'),
             'hargajual'  => $this->request->getVar('jual'),
-            'stok'      => $this->request->getVar('stok'),
+            'stok'       => $this->request->getVar('stok'),
             'idsupplier' => $this->request->getVar('idsupplier'),
             'expired'    => $this->request->getVar('expired')
         ];
         
+        $model = new BarangModel();
         $model->simpan( $data );
 
-        $p['pesan'] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../barang', 'Lanjut' );
+        $p[ 'pesan' ] = '<p>Data '. $this->request->getVar('nama') .' berhasil disimpan.</p>'. anchor( '../barang', 'Lanjut' );
 
         echo view('templates/pesan', $p); //lokasi fisik file
     }
@@ -63,7 +62,7 @@ class Barang extends Controller
         $model = new BarangModel();
 
         $data['title'] = 'Pembaruan Data Supplier';
-        $data['barang'] = $model->pilih( $id );
+        $data['data'] = $model->pilih( $id );
 
         $smodel = new SupplierModel();
         $data['supplier'] = $smodel->tampil();
@@ -99,8 +98,8 @@ class Barang extends Controller
 
         $model->hapus( $id );
 
-        $data['pesan'] = '<p>Data dihapus.</p>'.anchor( '../barang', 'Lanjut' );
+        $p['pesan'] = '<p>Data dihapus.</p>'.anchor( '../barang', 'Lanjut' );
 
-        echo view( 'templates/pesan', $data );
+        echo view( 'templates/pesan', $p );
     }
 }

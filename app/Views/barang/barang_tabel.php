@@ -1,5 +1,5 @@
 <?php
-echo anchor( '../barang/form', 'Tambah' );
+echo anchor( '../barang/form', '+ Tambah' );
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>

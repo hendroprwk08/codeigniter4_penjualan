@@ -1,9 +1,8 @@
 <?php
-//menampilkan error hasil validasi form
-echo form_open('../barang/simpan');
+echo form_open( '../barang/simpan' );
 
 echo 'ID: '. form_input( array( 'name' => 'id', 
-                                'maxlength' => '3')) .'</br>';
+                                'maxlength' => '3') ) .'</br>';
 
 echo 'Nama: '. form_input('nama') .'</br>';
 echo 'Harga Beli: '. form_input('beli') .'</br>';
