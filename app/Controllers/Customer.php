@@ -15,9 +15,15 @@ class Customer extends Controller
     {
         //panggil model
         $model = new CustomerModel();
+        
+        $pager = \Config\Services::pager();
+        $pager->setPath('ci4_penjualan/public/customer'); //modifikasi path link
 
-        $data['title'] = 'Tabel Customer';
-        $data['data'] = $model->tampil();
+        $data = [
+            'title' => 'Table Customer',
+            'data'  => $model->paginate(5),
+            'pager' => $model->pager
+        ];
 
         echo view( 'templates/header', $data );
         echo view( 'customer/customer_tabel', $data ); //lokasi fisik file

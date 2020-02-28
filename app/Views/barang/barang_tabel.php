@@ -1,5 +1,5 @@
 <?php
-echo anchor( '../barang/form', '+ Tambah' );
+echo '<p>'.anchor( '../barang/form', '+ Tambah' ).'</p>';
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
@@ -39,7 +39,7 @@ if ( ! empty( $data ) && is_array( $data ) ) :
 
 	</table>
 
-        <?= print_r( $pager ); ?>
+        <?=  $pager->links(); ?>
 
 <?php else : ?>
 

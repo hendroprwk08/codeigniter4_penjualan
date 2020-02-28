@@ -12,8 +12,14 @@ class Supplier extends Controller
 
 	    $model = new SupplierModel();
 
-	    $data['title'] = 'Tabel Supplier';
-	    $data['data'] = $model->tampil();
+            $pager = \Config\Services::pager();
+            $pager->setPath('ci4_penjualan/public/supplier'); //modifikasi path link
+
+            $data = [
+                'title' => 'Table Supplier',
+                'data'  => $model->paginate(5),
+                'pager' => $model->pager
+            ];
 
 	    echo view( 'templates/header', $data );
 	    echo view( 'supplier/supplier_tabel', $data ); //lokasi fisik file

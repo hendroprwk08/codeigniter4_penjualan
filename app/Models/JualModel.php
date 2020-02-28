@@ -11,24 +11,13 @@ https://codeigniter4.github.io/userguide/tutorial/news_section.html
 
 class JualModel extends Model
 {
-    //nama table
-    protected $table = 'customer'; //wajib table [baku]
+    //nama table, pada kasus ini mengambil dari view
+    protected $table = 'vjual'; //wajib table [baku]
 
-    //mempresentasikan kolom pada tabel [ harus sama ]
-    protected $allowedFields = ['idcustomer',
-                                'namacustomer',
-                                'telpcustomer'];
-
-    public $db = null;
-    
-    public function __construct() {
-        $this->db = \Config\Database::connect(); //sambungkan database
-    }
-    
     public function tampil()
     {
         try {
-            
+            $db = \Config\Database::connect(); //sambungkan database
             $builder = $this->db->table('vjual');
             $query = $builder->orderBy('faktur', 'desc')->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array
@@ -44,6 +33,7 @@ class JualModel extends Model
     public function simpan( $query )
     {
         try {
+            $db = \Config\Database::connect(); //sambungkan database
             $this->db->query($query);
         }
         catch (\Exception $e)
@@ -55,6 +45,7 @@ class JualModel extends Model
     public function pilih($id)
     {
         try {
+            $db = \Config\Database::connect(); //sambungkan database
             $builder = $this->db->table('vcompletejual')
                                 ->where( 'faktur', $id);
             
@@ -72,6 +63,7 @@ class JualModel extends Model
     public function hapus($id)
     {
         try {
+            $db = \Config\Database::connect(); //sambungkan database
             $this->db->query('call spDelJual("'. $id .'")'); //store procedure
         }
         catch (\Exception $e)
@@ -83,6 +75,8 @@ class JualModel extends Model
     public function create_no_faktur()
     {
         try {
+            $db = \Config\Database::connect(); //sambungkan database
+            
             //mengambil ID
             $query = $this->db->query('SELECT faktur FROM jual WHERE year(tanggal) = "'. date('Y') .'" AND month(tanggal) = "'. date('m') .'" order by faktur desc limit 1');
             $result = $query->getResultArray();

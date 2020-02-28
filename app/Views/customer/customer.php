@@ -3,7 +3,7 @@
 echo form_open('../customer/simpan');
 
 echo 'ID: '. form_input( array( 'name' => 'id',
-                                'maxlength' => '3')) .'</br>';
+                                'maxlength' => '5')) .'</br>';
 
 echo 'Nama: '. form_input('nama') .'</br>';
 echo 'Telepon: '. form_input('telp') .'</br>';

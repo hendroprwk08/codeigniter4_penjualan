@@ -1,5 +1,5 @@
 <?php
-echo anchor( '../customer/form', 'Tambah' );
+echo '<p>'. anchor( '../customer/form', '+ Tambah' ) .'</p>';
 
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
@@ -26,6 +26,8 @@ if ( ! empty( $data ) && is_array( $data ) ) :
     <?php endforeach; ?>
 
     </table>
+
+    <?=  $pager->links(); ?>
 
 <?php else : ?>
 

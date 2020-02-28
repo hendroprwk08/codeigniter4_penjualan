@@ -16,10 +16,15 @@ class Barang extends Controller
     public function index()
     {
         $model = new BarangModel();
-
-        $data['title'] = 'Tabel Barang';
-        $data['data'] = $model->tampil();
-
+        $pager = \Config\Services::pager();
+        $pager->setPath('ci4_penjualan/public/barang'); //modifikasi path link
+        
+        $data = [
+            'title' => 'Table Barang',
+            'data'  => $model->paginate(5),
+            'pager' => $model->pager
+        ];
+        
         echo view( 'templates/header', $data );
         echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
         echo view( 'templates/footer' );

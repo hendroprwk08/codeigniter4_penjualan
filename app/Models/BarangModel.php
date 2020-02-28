@@ -23,16 +23,11 @@ class BarangModel extends Model
                                 'idsupplier',
                                 'expired'];
     
-    public $db;
-
-    public function __construct() {
-        $this->db = \Config\Database::connect();
-    }
-
     public function tampil()
     {
         try {
             //khusus bagian ini: menggunakan view yang telah dibuat pd database            
+            $db = \Config\Database::connect();
             $builder = $this->db->table('vbarangsupplier');
             $query = $builder->orderBy('idbarang', 'desc')->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array
@@ -45,8 +40,8 @@ class BarangModel extends Model
             die('Error: '. $e->getMessage());
         }
     }
-    
-     public function pilih( $id )
+
+    public function pilih( $id )
     {
         try {
             return $this->asArray()->where( 'idbarang', $id)->findAll(); //harus array
@@ -71,6 +66,7 @@ class BarangModel extends Model
     public function total()
     {
         try {
+            $db = \Config\Database::connect();
             $builder = $this->db->table('vbarangsupplier');
             $query = $builder->get(); //ambil data
             $result =  $query->getResultArray(); //uraikan / tampilkan data dalam bentuk array

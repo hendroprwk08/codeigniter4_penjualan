@@ -22,9 +22,15 @@ class Jual extends Controller
         $this->session->remove([ 'faktur', 'tanggal', 'idcustomer', 'barang' ]); //clear session
         
         $model = new JualModel();
+        
+        $pager = \Config\Services::pager();
+        $pager->setPath('ci4_penjualan/public/jual'); //modifikasi path link
 
-        $data['title'] = 'Tabel Supplier';
-        $data['data'] = $model->tampil();
+        $data = [
+            'title' => 'Table Penjualan',
+            'data'  => $model->paginate(5),
+            'pager' => $model->pager
+        ];
 
         echo view( 'templates/header', $data );
         echo view( 'jual/jual_tabel', $data ); //lokasi fisik file

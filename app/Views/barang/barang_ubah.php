@@ -5,7 +5,7 @@ if ( ! empty( $data ) && is_array( $data ) ) :
     echo form_open('../barang/perbarui');
     
     echo 'ID: '. form_input( array( 'name'      => 'id',
-                                    'maxlength' => '3',
+                                    'maxlength' => '5',
                                     'value'     => $data[0]['idbarang'],
                                     'readonly'  => 'readonly')) .'</br>';
     
