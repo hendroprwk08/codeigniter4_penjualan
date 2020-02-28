@@ -107,7 +107,7 @@ if ( isset ( $cart ) ):
     endforeach;
 endif;    
 ?>
-        <tr><td colspan='5'>&nbsp;</td><td><?= $total ?></td><td>&nbsp;</td></tr>
+        <tr><td colspan='5'>&nbsp;</td><td><?= number_format( $total ) ?></td><td>&nbsp;</td></tr>
 </table>
 
 <?= '<p>'. anchor( 'jual/simpan', 'Simpan') .'</p>'; ?>
