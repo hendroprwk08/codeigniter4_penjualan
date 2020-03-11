@@ -8,7 +8,7 @@ class Customer extends Controller
     //kode yang dijalankan pertama kali saat Customer digunakan
     public function __construct() 
     {
-        helper( [ 'url', 'form' ] ); //load url helper
+        helper( [ 'url', 'form' ] ); //load url dan form helper
     }
 
     public function index()
