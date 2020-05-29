@@ -24,7 +24,7 @@ echo 'Faktur: '. form_input( array( 'name'      => 'faktur',
 $tanggal = isset( $session['tanggal'] ) ? $session[ 'tanggal' ] : date('Y-m-d');
 echo 'Tanggal: '. form_input('tanggal', $tanggal) .'</br>';
 
-
+dw
 
 //persiapan dropdown
 foreach ($customer as $row):
@@ -38,17 +38,7 @@ echo form_submit('submit', 'Set Faktur');
 
 echo  form_close();
 
-$att = [
-    'width'      => 350,    
-    'height'     => 300,    
-    'scrollbars' => 'yes',    
-    'status' => 'yes',    
-    'screenx' => 0,    
-    'screeny' => 0,    
-    'window_name' => '_blank',    
-];
-
-echo '<p>'. anchor_popup('../jual/tabel_barang', 'Tambah Barang', $att) .'</p>';
+X`
 ?>
 
 <table border="1" style="border-collapse: collapse">
