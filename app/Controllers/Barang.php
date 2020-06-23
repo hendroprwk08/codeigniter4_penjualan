@@ -2,7 +2,7 @@
 use CodeIgniter\Controller;
 
 use App\Models\BarangModel; //import
-use App\Models\SupplierModel ; //import
+use App\Models\SupplierModel ;
 
 class Barang extends Controller
 {
