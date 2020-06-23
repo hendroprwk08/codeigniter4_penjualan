@@ -39,7 +39,7 @@
     <div style='display:block; background:#fafafa; padding:10px; margin-bottom:20px;'>
         <b>Menu</b>&nbsp;&nbsp;
         <?= anchor('../supplier', 'Supplier'); ?>&nbsp;&nbsp;
-        <?= anchor('../barang', 'Barang'); ?>&nbsp;&nbsp;
+        <?= anchor('../barang', 'Barang ( +Pencarian )'); ?>&nbsp;&nbsp;
         <?= anchor('../customer', 'Customer'); ?>&nbsp;&nbsp;
         <?= anchor('../jual', 'Penjualan'); ?>
     </div>

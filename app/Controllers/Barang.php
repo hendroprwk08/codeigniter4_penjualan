@@ -7,21 +7,38 @@ use App\Models\SupplierModel ; //import
 class Barang extends Controller
 {
     
+    public $session = null;
+    
     public function __construct()
     {
         helper( [ 'url', 'form' ] );
+        $this->session = \Config\Services::session();
     }
-
 
     public function index()
     {
         $model = new BarangModel();
         $pager = \Config\Services::pager();
-        $pager->setPath('codeigniter4_penjualan/public/barang'); //modifikasi path link
+        $pencarian = "";
+
+        //tampung pada session
+        if ( $this->request->getVar('cari') != "" ) 
+            $this->session->set( 'cari_barang', $this->request->getVar('cari') );
+        
+        //jika ada pencarian
+        if ( $this->session->get( 'cari_barang') != "" ):
+            $pencarian = $this->session->get( 'cari_barang' );
+            $pager->setPath('codeigniter4_penjualan/public/barang'); //modifikasi path link
+            $tabledata = $model->cari( $this->session->get( 'cari_barang') )->paginate(5);
+        else:
+            $pager->setPath('codeigniter4_penjualan/public/barang'); //modifikasi path link
+            $tabledata = $model->paginate(5);            
+        endif;    
         
         $data = [
             'title' => 'Table Barang',
-            'data'  => $model->paginate(5),
+            'data'  => $tabledata,
+            'pencarian'  => $pencarian,
             'pager' => $model->pager
         ];
         
@@ -29,27 +46,12 @@ class Barang extends Controller
         echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
         echo view( 'templates/footer' );
     }
-
-    public function cari()
-	{
-	    helper( [ 'url', 'form'] ); //load url helper
-
-	    $model = new BarangModel();
-
-        $pager = \Config\Services::pager();
-        $pager->setPath('codeigniter4_penjualan/public/barang/cari'); //modifikasi path link
-
-        $data = [
-            'title' => 'Table Barang',
-            'data'  => $model->cari( $this->request->getVar('cari') )->paginate(5),
-            'pager' => $model->pager
-        ];
-
-	    echo view( 'templates/header', $data );
-	    echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
+   
+    public function reset(){
+        $this->session->remove( 'cari_barang' );
+        return redirect()->to( base_url().'barang' );
     }
-    
+
     public function form()
     {
         $smodel = new SupplierModel();

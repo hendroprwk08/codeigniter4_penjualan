@@ -26,28 +26,6 @@ class Supplier extends Controller
 	    echo view( 'templates/footer' );
 	}
 
-	public function cari()
-	{
-	    helper( [ 'url', 'form'] ); //load url helper
-
-	    $model = new SupplierModel();
-
-            $pager = \Config\Services::pager();
-            $pager->setPath('codeigniter4_penjualan/public/supplier'); //modifikasi path link
-
-			//print_r( $model->cari( $this->request->getVar('cari') ) );
-
-            $data = [
-                'title' => 'Table Supplier',
-                'data'  => $model->cari( $this->request->getVar('cari') )->paginate(5),
-                'pager' => $model->pager
-            ];
-
-	    echo view( 'templates/header', $data );
-	    echo view( 'supplier/supplier_tabel', $data ); //lokasi fisik file
-	    echo view( 'templates/footer' );
-	}
-
 	public function form()
 	{
             helper('form'); //load form helper

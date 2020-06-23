@@ -1,11 +1,6 @@
 <?php
 echo '<p>'. anchor( 'supplier/form', '+ Tambah' ) .'</p>';
 
-echo form_open('supplier/cari');
-echo form_input('cari');
-echo form_submit('submit', 'Cari');
-echo form_close()."</br>";
-
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
 

@@ -1,9 +1,10 @@
 <?php
 echo '<p>'.anchor( '../barang/form', '+ Tambah' ).'</p>';
 
-echo form_open('barang/cari');
-echo form_input('cari');
+echo form_open('barang/index');
+echo form_input('cari', $pencarian);
 echo form_submit('submit', 'Cari');
+echo anchor( 'barang/reset', 'Reset' );
 echo form_close()."</br>";
 
 if ( ! empty( $data ) && is_array( $data ) ) :
@@ -45,7 +46,7 @@ if ( ! empty( $data ) && is_array( $data ) ) :
 	</table>
 
         <?= $pager->links(); ?>
-
+		
 <?php else : ?>
 
 	<p>Sayang sekali, data barang masih kosong.</p>
