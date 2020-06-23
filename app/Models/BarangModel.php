@@ -111,4 +111,15 @@ class BarangModel extends Model
             die('Error: '. $e->getMessage());
         }
     }
+
+    public function cari( $cari )
+    {       
+        try {
+            return $this->like( 'namabarang', $cari );
+        }
+        catch (\Exception $e)
+        {
+            die('Error: '. $e->getMessage());
+        }
+    }
 }

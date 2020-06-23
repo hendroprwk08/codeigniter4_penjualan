@@ -17,7 +17,7 @@ class Customer extends Controller
         $model = new CustomerModel();
         
         $pager = \Config\Services::pager();
-        $pager->setPath('ci4_penjualan/public/customer'); //modifikasi path link
+        $pager->setPath('codeigniter4_penjualan/public/customer'); //modifikasi path link
 
         $data = [
             'title' => 'Table Customer',

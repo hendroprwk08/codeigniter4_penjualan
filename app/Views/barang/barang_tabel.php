@@ -1,6 +1,11 @@
 <?php
 echo '<p>'.anchor( '../barang/form', '+ Tambah' ).'</p>';
 
+echo form_open('barang/cari');
+echo form_input('cari');
+echo form_submit('submit', 'Cari');
+echo form_close()."</br>";
+
 if ( ! empty( $data ) && is_array( $data ) ) :
 ?>
 
@@ -39,7 +44,7 @@ if ( ! empty( $data ) && is_array( $data ) ) :
 
 	</table>
 
-        <?=  $pager->links(); ?>
+        <?= $pager->links(); ?>
 
 <?php else : ?>
 

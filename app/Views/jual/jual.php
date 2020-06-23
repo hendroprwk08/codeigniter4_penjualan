@@ -11,7 +11,7 @@ function hitung()
 </script>
 
 <?php
-print_r ($session);
+//print_r ($session);
 
 echo form_open('../jual/set_header');
 
@@ -24,10 +24,8 @@ echo 'Faktur: '. form_input( array( 'name'      => 'faktur',
 $tanggal = isset( $session['tanggal'] ) ? $session[ 'tanggal' ] : date('Y-m-d');
 echo 'Tanggal: '. form_input('tanggal', $tanggal) .'</br>';
 
-dw
-
 //persiapan dropdown
-foreach ($customer as $row):
+foreach($customer as $row):
     $option[ $row['idcustomer'] ] = $row['namacustomer'];
 endforeach;
 
@@ -38,7 +36,18 @@ echo form_submit('submit', 'Set Faktur');
 
 echo  form_close();
 
-X`
+$atts = [
+    'width'       => 800,
+    'height'      => 600,
+    'scrollbars'  => 'yes',
+    'status'      => 'yes',
+    'resizable'   => 'yes',
+    'screenx'     => 0,
+    'screeny'     => 0,
+    'window_name' => '_blank'
+];
+
+echo anchor_popup('jual/tabel_barang', 'Pilih Barang', $atts);
 ?>
 
 <table border="1" style="border-collapse: collapse">

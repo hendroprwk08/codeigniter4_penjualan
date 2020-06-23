@@ -85,4 +85,16 @@ class SupplierModel extends Model
             die('Error: '. $e->getMessage());
         }
     }
+
+    public function cari( $cari )
+    {       
+        try {
+            return $this->like( 'namasupplier', $cari );
+            
+        }
+        catch (\Exception $e)
+        {
+            die('Error: '. $e->getMessage());
+        }
+    }
 }

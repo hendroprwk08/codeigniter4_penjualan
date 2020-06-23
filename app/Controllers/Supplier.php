@@ -8,16 +8,38 @@ class Supplier extends Controller
 
 	public function index()
 	{
-	    helper('url'); //load url helper
+	    helper( [ 'url', 'form'] ); //load url helper
+
+	    $model = new SupplierModel();
+
+		$pager = \Config\Services::pager();
+		$pager->setPath('codeigniter4_penjualan/public/supplier'); //modifikasi path link
+
+		$data = [
+			'title' => 'Table Supplier',
+			'data'  => $model->paginate(5),
+			'pager' => $model->pager
+		];
+
+	    echo view( 'templates/header', $data );
+	    echo view( 'supplier/supplier_tabel', $data ); //lokasi fisik file
+	    echo view( 'templates/footer' );
+	}
+
+	public function cari()
+	{
+	    helper( [ 'url', 'form'] ); //load url helper
 
 	    $model = new SupplierModel();
 
             $pager = \Config\Services::pager();
-            $pager->setPath('ci4_penjualan/public/supplier'); //modifikasi path link
+            $pager->setPath('codeigniter4_penjualan/public/supplier'); //modifikasi path link
+
+			//print_r( $model->cari( $this->request->getVar('cari') ) );
 
             $data = [
                 'title' => 'Table Supplier',
-                'data'  => $model->paginate(5),
+                'data'  => $model->cari( $this->request->getVar('cari') )->paginate(5),
                 'pager' => $model->pager
             ];
 

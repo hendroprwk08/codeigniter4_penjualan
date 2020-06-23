@@ -24,7 +24,7 @@ class Jual extends Controller
         $model = new JualModel();
         
         $pager = \Config\Services::pager();
-        $pager->setPath('ci4_penjualan/public/jual'); //modifikasi path link
+        $pager->setPath('codeigniter4_penjualan/public/jual'); //modifikasi path link
 
         $data = [
             'title' => 'Table Penjualan',

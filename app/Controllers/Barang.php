@@ -17,7 +17,7 @@ class Barang extends Controller
     {
         $model = new BarangModel();
         $pager = \Config\Services::pager();
-        $pager->setPath('ci4_penjualan/public/barang'); //modifikasi path link
+        $pager->setPath('codeigniter4_penjualan/public/barang'); //modifikasi path link
         
         $data = [
             'title' => 'Table Barang',
@@ -30,6 +30,26 @@ class Barang extends Controller
         echo view( 'templates/footer' );
     }
 
+    public function cari()
+	{
+	    helper( [ 'url', 'form'] ); //load url helper
+
+	    $model = new BarangModel();
+
+        $pager = \Config\Services::pager();
+        $pager->setPath('codeigniter4_penjualan/public/barang/cari'); //modifikasi path link
+
+        $data = [
+            'title' => 'Table Barang',
+            'data'  => $model->cari( $this->request->getVar('cari') )->paginate(5),
+            'pager' => $model->pager
+        ];
+
+	    echo view( 'templates/header', $data );
+	    echo view( 'barang/barang_tabel', $data ); //lokasi fisik file
+	    echo view( 'templates/footer' );
+    }
+    
     public function form()
     {
         $smodel = new SupplierModel();
